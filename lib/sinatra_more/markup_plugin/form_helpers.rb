@@ -24,6 +24,7 @@
 
 require_relative "./form_builder/abstract_form_builder"
 require_relative "./form_builder/standard_form_builder"
+require_relative "./form_builder/grouped_field_form_builder"
 
 module SinatraMore
   module FormHelpers

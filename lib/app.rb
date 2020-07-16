@@ -123,20 +123,30 @@ if ENV["APP_ENV"]
   App.env = ENV["APP_ENV"]
 end
 
-# bring in models
+# bring in model base
 require "#{App.root}/lib/db.rb"
 require "#{App.root}/lib/db_model.rb"
+
+# and sinatra_more helpers
+require "#{App.root}/lib/sinatra_more/markup_plugin"
+require "#{App.root}/lib/sinatra_more/render_plugin"
+
+class App
+  include SinatraMore::AssetTagHelpers
+  include SinatraMore::FormHelpers
+  include SinatraMore::FormatHelpers
+  include SinatraMore::OutputHelpers
+  include SinatraMore::RenderHelpers
+  include SinatraMore::TagHelpers
+end
+
+# bring in user's models and helpers
 Dir.glob("#{App.root}/app/models/*.rb").each{|f| require f }
 
-# and helpers
 require "#{App.root}/lib/helpers.rb"
 Dir.glob("#{App.root}/app/helpers/*.rb").each do |f|
   require f
 end
-
-# and sinatra_more form and render helpers
-require "#{App.root}/lib/sinatra_more/markup_plugin"
-require "#{App.root}/lib/sinatra_more/render_plugin"
 
 # and controllers, binding each's helper
 (
