@@ -134,6 +134,10 @@ Dir.glob("#{App.root}/app/helpers/*.rb").each do |f|
   require f
 end
 
+# and sinatra_more form and render helpers
+require "#{App.root}/lib/sinatra_more/markup_plugin"
+require "#{App.root}/lib/sinatra_more/render_plugin"
+
 # and controllers, binding each's helper
 (
   [ "#{App.root}/app/controllers/application_controller.rb" ] +
