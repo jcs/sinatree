@@ -107,7 +107,7 @@ protected
       return ""
     end
 
-    content_tag(:div, help, :class => "help-block")
+    @template.content_tag(:div, help, :class => "help-block")
   end
 
   def extract_input_options(options)
