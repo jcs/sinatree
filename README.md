@@ -16,15 +16,19 @@ some simple conventions:
 
 Clone `sinatree`:
 
-	git clone https://github.com/jcs/sinatree.git
+	$ git clone https://github.com/jcs/sinatree.git
 
 Then install Bundler dependencies:
 
-	bundle install --path vendor/bundle
+	$ bundle install --path vendor/bundle
+
+Initialize a session secret key:
+
+	$ ruby -e 'require "securerandom"; print SecureRandom.hex(64)' > config/session_secret
 
 To create a database table `users` for a new `User` model:
 
-	$EDITOR `bundle exec rake db:create_migration NAME=create_user_model`
+	$ $EDITOR `bundle exec rake db:create_migration NAME=create_user_model`
 
 	class CreateUserModel < ActiveRecord::Migration[5.2]
 	  def change
@@ -38,7 +42,7 @@ To create a database table `users` for a new `User` model:
 
 Then run the database migrations:
 
-	bundle exec rake db:migrate
+	$ bundle exec rake db:migrate
 
 The new `User` model can be created as `app/models/user.rb`:
 
@@ -57,11 +61,11 @@ A root controller can be created as `app/controllers/home_controller.rb`:
 
 To run a web server with your application:
 
-	bin/server
+	$ bin/server
 
 To access an IRB console:
 
-	bin/console
+	$ bin/console
 
 ### License
 
