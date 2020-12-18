@@ -51,6 +51,7 @@ The new `User` model can be created as `app/models/user.rb`:
 	end
 
 A root controller can be created as `app/controllers/home_controller.rb`:
+
 	class HomeController < ApplicationController
 	  self.path = :root
 
