@@ -75,6 +75,11 @@ class Sinatra::Base
     use Rack::CommonLogger, @@logger
 
     enable :sessions
+    set :sessions, {
+      :key => "_session",
+      :httponly => true,
+      :same_site => :strict,
+    }
     begin
       set :session_secret, File.read("#{self.root}/config/session_secret")
     rescue => e
