@@ -248,9 +248,15 @@ module SinatraMore
         selected_values = [selected_values].compact
       end
 
-      grouped_option_items.collect{|group|
+      grouped_option_items.map{|group|
+        group_caption, opts = if group.is_a?(Hash)
+          [ group.keys.first, group.values ]
+        else
+          [ group[0], group[1 .. -1] ]
+        end
+
         content_tag(:optgroup,
-          group[1].collect{|caption, value|
+          opts.map{|caption|
             value ||= caption
             selected = selected_values.find{|v|
               v.to_s.match(/^(#{value}|#{caption})$/)
@@ -258,7 +264,7 @@ module SinatraMore
             content_tag(:option, caption, :value => value,
               :selected => !!selected)
           }.join("\n"),
-          :label => group[0])
+          :label => group_caption)
       }.join("\n")
     end
 
