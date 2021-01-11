@@ -17,8 +17,8 @@ describe UniqueId do
     uobj = UniqueId.new(uid)
     assert uobj
 
-    assert_operator uobj.time, :>=, t
-    assert_operator uobj.time, :<, t2
+    assert_operator uobj.time.to_i, :>=, t.to_i
+    assert_operator uobj.time.to_i, :<, t2.to_i
 
     assert_equal uobj.node, 5
 
