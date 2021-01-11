@@ -124,10 +124,6 @@ class App < Sinatra::Base
   end
 end
 
-if ENV["APP_ENV"]
-  App.env = ENV["APP_ENV"]
-end
-
 # bring in model base
 require "#{App.root}/lib/db.rb"
 require "#{App.root}/lib/db_model.rb"
