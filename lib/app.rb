@@ -34,6 +34,7 @@ class Sinatra::Base
   @@logger = nil
 
   set :root, File.realpath(__dir__ + "/../")
+  set :database_file, "#{Sinatra::Base.root}/db/config.yml"
 
   def self.cur_controller
     raise
