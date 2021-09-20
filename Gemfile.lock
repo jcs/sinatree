@@ -23,10 +23,15 @@ GEM
       reline (>= 0.0.1)
     json (2.3.1)
     kgio (2.11.3)
+    mail (2.7.1)
+      mini_mime (>= 0.1.1)
+    mini_mime (1.1.1)
     minitest (5.14.1)
     multi_json (1.15.0)
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
+    pony (1.13.1)
+      mail (>= 2.0)
     rack (2.2.3)
     rack-protection (2.0.8.1)
       rack
@@ -74,6 +79,7 @@ DEPENDENCIES
   irb
   json
   minitest
+  pony
   rack (>= 2.0.6)
   rack-test
   rack_csrf

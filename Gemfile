@@ -22,6 +22,9 @@ gem "json"
 
 gem "bcrypt"
 
+# for email and notification exceptions
+gem "pony"
+
 # for development
 gem "shotgun"
 gem "irb", :require => false

@@ -27,26 +27,39 @@ require "sinatra/activerecord"
 require "cgi"
 require "rack/csrf"
 
-class Sinatra::Base
+# configure mail early in case of exceptions
+require "pony"
+require "#{APP_ROOT}/config/mail.rb"
+
+class App < Sinatra::Base
   register Sinatra::Namespace
   register Sinatra::ActiveRecordExtension
 
-  @@logger = nil
+  # defaults, to be overridden with App.X = "..." in config/app.rb
 
+  # app name used in various places (emails, etc.)
+  cattr_accessor :name
+  @@name = "App"
+
+  # email addresses to be notified of exceptions
+  cattr_accessor :exception_recipients
+  @@exception_recipients = []
+
+  # parameters to be filtered from exception notifications and verbose logging
+  cattr_accessor :filtered_parameters
+  # regexes or strings
+  @@filtered_parameters = [ /password/ ]
+
+
+  # where we're at
   set :root, File.realpath(__dir__ + "/../")
-  set :database_file, "#{Sinatra::Base.root}/db/config.yml"
 
-  def self.cur_controller
-    raise
-  rescue => e
-    e.backtrace.each do |z|
-      if m = z.match(/app\/controllers\/(.+?)_controller\.rb:/)
-        return m[1]
-      end
-    end
+  # config for active record
+  set :database_file, "#{App.root}/db/config.yml"
 
-    nil
-  end
+  # gathered later from all controllers
+  @@all_routes = {}
+  cattr_accessor :all_routes
 
   # app/views/(controller)/
   set :views, Proc.new { App.root + "/app/views/#{cur_controller}/" }
@@ -64,64 +77,79 @@ class Sinatra::Base
     end
   }
 
-  configure do
-    # store timestamps in the db in UTC, but convert to Time.zone time when
-    # instantiating objects
-    Time.zone = "Central Time (US & Canada)"
-    ActiveRecord::Base.time_zone_aware_attributes = true
+  # store timestamps in the db in UTC, but convert to Time.zone time when
+  # instantiating objects
+  Time.zone = "Central Time (US & Canada)"
+  ActiveRecord::Base.time_zone_aware_attributes = true
 
-    enable :logging
-    ActiveSupport::LogSubscriber.colorize_logging = false
-    @@logger = ::Logger.new(STDOUT)
-    use Rack::CommonLogger, @@logger
+  # non-colored logging
+  enable :logging
+  ActiveSupport::LogSubscriber.colorize_logging = false
+  @@logger = ::Logger.new(STDOUT)
+  use Rack::CommonLogger, @@logger
 
-    enable :sessions
-    set :sessions, {
-      :key => "_session",
-      :httponly => true,
-      :same_site => :strict,
-    }
-    begin
-      set :session_secret, File.read("#{self.root}/config/session_secret")
-    rescue => e
-      STDERR.puts e.message
-      STDERR.puts "no session secret file",
-        "ruby -e 'require \"securerandom\"; " +
-        "print SecureRandom.hex(64)' > config/session_secret"
-      exit 1
-    end
-
-    # allow erb views to be named view.html.erb
-    Tilt.register Tilt::ERBTemplate, "html.erb"
+  # encrypted sessions, requiring a per-app secret to be configured
+  enable :sessions
+  set :sessions, {
+    :key => "_session",
+    :httponly => true,
+    :same_site => :strict,
+  }
+  begin
+    set :session_secret, File.read("#{App.root}/config/session_secret")
+  rescue => e
+    STDERR.puts e.message
+    STDERR.puts "no session secret file",
+      "ruby -e 'require \"securerandom\"; " +
+      "print SecureRandom.hex(64)' > config/session_secret"
+    exit 1
   end
 
-  singleton_class.send(:alias_method, :env, :environment)
-
-  def self.production?
-    self.env.to_s == "production"
-  end
-  def self.development?
-    self.env.to_s == "development"
-  end
-  def self.test?
-    self.env.to_s == "test"
-  end
-end
-
-class App < Sinatra::Base
-  @@all_routes = {}
-  cattr_accessor :all_routes
+  # allow erb views to be named view.html.erb
+  Tilt.register Tilt::ERBTemplate, "html.erb"
 
   class << self
+    alias_method :env, :environment
     attr_accessor :path
-  end
 
-  def self.logger
-    @@logger
+    def cur_controller
+      raise
+    rescue => e
+      e.backtrace.each do |z|
+        if m = z.match(/app\/controllers\/(.+?)_controller\.rb:/)
+          return m[1]
+        end
+      end
+
+      nil
+    end
+
+    def logger
+      @@logger
+    end
+
+    def production?
+      env.to_s == "production"
+    end
+    def development?
+      env.to_s == "development"
+    end
+    def test?
+      env.to_s == "test"
+    end
   end
 
   def flash
     session[:flash] ||= {}
+  end
+
+  def logger
+    @@logger
+  end
+
+  # per-environment configuration
+  if File.exists?(_c = "#{App.root}/config/#{App.environment}.rb")
+    require _c
   end
 end
 
@@ -130,8 +158,8 @@ require "#{App.root}/lib/db.rb"
 require "#{App.root}/lib/db_model.rb"
 
 # and sinatra_more helpers
-require "#{App.root}/lib/sinatra_more/markup_plugin"
-require "#{App.root}/lib/sinatra_more/render_plugin"
+require "#{App.root}/lib/sinatra_more/markup_plugin.rb"
+require "#{App.root}/lib/sinatra_more/render_plugin.rb"
 
 class App
   include SinatraMore::AssetTagHelpers
@@ -192,4 +220,7 @@ ApplicationController.subclasses.each do |subklass|
   App.all_routes[path] = subklass
 end
 
-# add local app configuration here
+# per-app initialization, not specific to environment
+if File.exists?(_c = "#{App.root}/config/app.rb")
+  require _c
+end

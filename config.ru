@@ -19,6 +19,9 @@ if ENV["APP_ENV"] == "production"
   ENV["RACK_ENV"] = "deployment"
 end
 
+require File.realpath(__dir__) + "/lib/exceptions.rb"
+use Rack::ExceptionMailer
+
 require File.realpath(__dir__) + "/lib/app.rb"
 
 App.all_routes.reject{|_k,_v| _k == :root }.each do |_k,_v|
