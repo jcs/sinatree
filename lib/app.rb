@@ -106,7 +106,8 @@ class App < Sinatra::Base
   end
 
   # allow erb views to be named view.html.erb
-  Tilt.register Tilt::ERBTemplate, "html.erb"
+  Tilt.prefer Tilt::ErubisTemplate
+  Tilt.register Tilt::ErubisTemplate, "html.erb"
 
   class << self
     alias_method :env, :environment
