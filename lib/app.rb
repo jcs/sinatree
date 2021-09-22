@@ -41,6 +41,10 @@ class App < Sinatra::Base
   cattr_accessor :name
   @@name = "App"
 
+  # to be replaced by an absolute url with scheme/domain
+  cattr_accessor :base_url
+  @@base_url = "/"
+
   # email addresses to be notified of exceptions
   cattr_accessor :exception_recipients
   @@exception_recipients = []
