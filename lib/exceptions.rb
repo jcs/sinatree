@@ -29,13 +29,23 @@ module Rack
       end
     end
 
+    def first_app_call(exception)
+      exception.backtrace.each do |l|
+        if (rp = relative_path(l)).match(/^app\//)
+          return rp
+        end
+      end
+
+      relative_path(exception.backtrace[0])
+    end
+
     def body(exception, env)
       o = [
         "#{exception.class} exception:",
         "",
         "  #{exception.message}",
         "",
-        relative_path(exception.backtrace[0]),
+        first_app_call(exception),
         "",
         "Request:",
         "-------------------------------",
