@@ -97,7 +97,7 @@ class App < Sinatra::Base
   set :sessions, {
     :key => "_session",
     :httponly => true,
-    :same_site => :strict,
+    :same_site => :lax,
   }
   begin
     set :session_secret, File.read("#{App.root}/config/session_secret")
