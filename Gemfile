@@ -4,8 +4,8 @@ ruby ">= 2.5.0"
 
 gem "rack", ">= 2.0.6"
 
-gem "sinatra", "~> 2.0"
-gem "sinatra-contrib", "~> 2.0"
+gem "sinatra", "~> 2.2"
+gem "sinatra-contrib", "~> 2.2"
 gem "erubis"
 
 gem "rack_csrf"
