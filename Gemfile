@@ -2,16 +2,16 @@ source "https://rubygems.org"
 
 ruby ">= 2.5.0"
 
-gem "rack", ">= 2.0.6"
+gem "rack"
 
-gem "sinatra", "~> 2.0"
-gem "sinatra-contrib", "~> 2.0"
+gem "sinatra"
+gem "sinatra-contrib"
 gem "erubis"
 
 gem "rack_csrf"
 
 gem "activerecord", "~> 5.2"
-gem "sinatra-activerecord", "~> 2.0"
+gem "sinatra-activerecord"
 
 gem "sqlite3"
 
