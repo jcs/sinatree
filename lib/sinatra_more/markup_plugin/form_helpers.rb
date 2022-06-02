@@ -252,11 +252,11 @@ module SinatraMore
         group_caption, opts = if group.is_a?(Hash)
           [ group.keys.first, group.values ]
         else
-          [ group[0], group[1 .. -1] ]
+          [ group[0], group[1 .. -1][0] ]
         end
 
         content_tag(:optgroup,
-          opts.map{|caption|
+          opts.map{|caption,value|
             value ||= caption
             selected = selected_values.find{|v|
               v.to_s.match(/^(#{value}|#{caption})$/)

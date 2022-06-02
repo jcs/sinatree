@@ -33,12 +33,12 @@ END
   it "renders a <select> with groups" do
     fht = FormHelperTest.new
     s = fht.select_tag(:test, :groups => GROUPED_OPTIONS_A, :include_blank => true)
-    assert_equal s, OUTPUT
+    assert_equal OUTPUT, s
   end
 
   it "renders a <select> from a group of arrays" do
     fht = FormHelperTest.new
     s = fht.select_tag(:test, :groups => GROUPED_OPTIONS_H, :include_blank => true)
-    assert_equal s, OUTPUT
+    assert_equal OUTPUT, s
   end
 end
