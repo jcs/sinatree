@@ -28,12 +28,12 @@ module SinatraMore
     # capture_html(&block) => "...html..."
     def capture_html(*args, &block)
       if self.respond_to?(:is_haml?) && is_haml?
-        block_is_haml?(block) ? capture_haml(*args, &block) : block.call
+        block_is_haml?(block) ? capture_haml(*args, &block) : block.call.to_s
       elsif has_erb_buffer?
         result_text = capture_erb(*args, &block)
-        result_text.present? ? result_text : (block_given? && block.call(*args))
+        result_text.present? ? result_text : (block_given? && block.call(*args)).to_s
       else # theres no template to capture, invoke the block directly
-        block.call(*args)
+        block.call(*args).to_s
       end
     end
 
