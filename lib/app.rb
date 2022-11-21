@@ -217,12 +217,18 @@ ApplicationController.subclasses.each do |subklass|
       subklass.to_s.gsub(/Controller$/, ""))
   end
 
-  if App.all_routes[path]
-    raise "duplicate route for #{path.inspect}: " <<
-      "#{App.all_routes[path].inspect} and #{subklass.inspect}"
+  if !path.is_a?(Array)
+    path = [ path ]
   end
 
-  App.all_routes[path] = subklass
+  path.each do |p|
+    if App.all_routes[p]
+      raise "duplicate route for #{p.inspect}: " <<
+        "#{App.all_routes[p].inspect} and #{subklass.inspect}"
+    end
+
+    App.all_routes[p] = subklass
+  end
 end
 
 # per-app initialization, not specific to environment
