@@ -10,7 +10,7 @@ gem "erubis"
 
 gem "rack_csrf"
 
-gem "activerecord", "~> 5.2"
+gem "activerecord", "~> 6.1"
 gem "sinatra-activerecord"
 
 gem "sqlite3"
