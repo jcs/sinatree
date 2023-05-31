@@ -8,7 +8,9 @@ module Rack
       return @app.call(env)
 
     rescue => e
-      email e, env
+      unless boring?(e)
+        email e, env
+      end
 
       return [
         500,
@@ -18,6 +20,10 @@ module Rack
     end
 
   private
+    def boring?(exception)
+      exception.is_a?(EOFError)
+    end
+
     def email(exception, env)
       b = body(exception, env)
 
