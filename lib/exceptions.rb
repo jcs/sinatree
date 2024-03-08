@@ -21,7 +21,10 @@ module Rack
 
   private
     def boring?(exception)
-      exception.is_a?(EOFError)
+      [
+        EOFError,
+        Rack::QueryParser::InvalidParameterError,
+      ].include?(exception.class)
     end
 
     def email(exception, env)
