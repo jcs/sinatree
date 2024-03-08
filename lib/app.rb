@@ -35,6 +35,23 @@ require "#{APP_ROOT}/config/mail.rb"
 # setup our custom logging to STDOUT
 require "#{APP_ROOT}/lib/logging.rb"
 
+# patch up Rack::Csrf to look at request.path for matching skipping rather than
+# request.path_info which is relative to the controller's path.  since we don't
+# route to the per-request controller if Rack::Csrf aborts, we can't do
+# controller-relative matching anyway.
+module Rack
+  class Csrf
+    def any?(list, request)
+      pi = request.path.empty? ? '/' : request.path
+      list.any? do |route|
+        if route =~ (request.request_method + ':' + pi)
+          return true
+        end
+      end
+    end
+  end
+end
+
 class App < Sinatra::Base
   register Sinatra::Namespace
   register Sinatra::ActiveRecordExtension
