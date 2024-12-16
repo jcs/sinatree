@@ -20,7 +20,8 @@ Clone `sinatree`:
 
 Then install Bundler dependencies:
 
-	$ bundle install --path vendor/bundle
+	$ bundle config set --local path vendor/bundle
+	$ bundle install
 
 Initialize a session secret key:
 
