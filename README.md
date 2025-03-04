@@ -17,19 +17,20 @@ some simple conventions:
 Clone `sinatree`:
 
 	$ git clone https://github.com/jcs/sinatree.git
+	$ cd sinatree
 
 Then install Bundler dependencies:
 
-	$ bundle config set --local path vendor/bundle
-	$ bundle install
+	sinatree$ bundle config set --local path vendor/bundle
+	sinatree$ bundle install
 
 Initialize a session secret key:
 
-	$ ruby -e 'require "securerandom"; print SecureRandom.hex(64)' > config/session_secret
+	sinatree$ ruby -e 'require "securerandom"; print SecureRandom.hex(64)' > config/session_secret
 
 To create a database table `users` for a new `User` model:
 
-	$ $EDITOR `bundle exec rake db:create_migration NAME=create_user_model`
+	sinatree$ $EDITOR `bundle exec rake db:create_migration NAME=create_user_model`
 
 	class CreateUserModel < ActiveRecord::Migration[5.2]
 	  def change
@@ -43,7 +44,7 @@ To create a database table `users` for a new `User` model:
 
 Then run the database migrations:
 
-	$ bundle exec rake db:migrate
+	sinatree$ bundle exec rake db:migrate
 
 The new `User` model can be created as `app/models/user.rb`:
 
@@ -63,15 +64,15 @@ A root controller can be created as `app/controllers/home_controller.rb`:
 
 To run a web server with your application:
 
-	$ bin/server
+	sinatree$ bin/server
 
 To access an IRB console:
 
-	$ bin/console
+	sinatree$ bin/console
 
 ### License
 
-Copyright (c) 2017-2020 joshua stein `<jcs@jcs.org>`
+Copyright (c) 2017-2025 joshua stein `<jcs@jcs.org>`
 
 Permission to use, copy, modify, and distribute this software for any
 purpose with or without fee is hereby granted, provided that the above
