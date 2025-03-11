@@ -36,7 +36,7 @@ GEM
       mail (>= 2.0)
     psych (5.1.2)
       stringio
-    rack (2.2.8.1)
+    rack (2.2.13)
     rack-protection (2.2.4)
       rack
     rack-test (2.1.0)
