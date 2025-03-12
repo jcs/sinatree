@@ -1,34 +1,35 @@
 source "https://rubygems.org"
 
-ruby ">= 2.5.0"
+ruby ">= 3.4"
 
 gem "rack"
 
-gem "sinatra", "< 3.0"
-gem "sinatra-contrib", "< 3.0"
-gem "erubis"
+gem "sinatra", "< 4.2"
+gem "erubi"
 
 gem "rack_csrf"
 
-gem "activerecord", "~> 5.2"
+gem "activerecord", "~> 8.0"
+gem "sinatra-contrib"
 gem "sinatra-activerecord"
 
 gem "sqlite3"
-
 # for mysql connections
 #gem "mysql2"
 
-gem "unicorn"
-gem "json"
+gem "puma"
+gem "rackup"
 
+gem "json"
 gem "bcrypt"
 
 # for email and notification exceptions
-gem "mail", "~> 2.7.1" # https://github.com/mikel/mail/issues/1489
+gem "mail"
 gem "pony"
 
 # for development
-gem "shotgun"
+gem "rerun"
+gem "rb-kqueue"
 gem "irb", :require => false
 
 # for testing

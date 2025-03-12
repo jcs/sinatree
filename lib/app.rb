@@ -135,8 +135,8 @@ class App < Sinatra::Base
   end
 
   # allow erb views to be named view.html.erb
-  Tilt.prefer Tilt::ErubisTemplate
-  Tilt.register Tilt::ErubisTemplate, "html.erb"
+  Tilt.prefer Tilt::ErubiTemplate
+  Tilt.register Tilt::ErubiTemplate, "html.erb"
 
   # before every request, store controller for Logger
   before do

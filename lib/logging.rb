@@ -28,7 +28,6 @@ module Sinatree
       began_at = Time.now.to_f
       request = Sinatra::Request.new(env)
       status, headers, body = @app.call(env)
-      headers = Rack::Utils::HeaderHash[headers]
       headers["X-Request-Id"] = request.uuid
       body = Rack::BodyProxy.new(body) {
         log(env, request, status, headers, began_at)
