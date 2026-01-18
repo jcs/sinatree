@@ -30,14 +30,14 @@ module Sinatree
       status, headers, body = @app.call(env)
       headers["X-Request-Id"] = request.uuid
       body = Rack::BodyProxy.new(body) {
-        log(env, request, status, headers, began_at)
+        log(env, request, status, headers, began_at, body.try(:first))
       }
       [status, headers, body]
     end
 
   private
     # Log the request to the configured logger.
-    def log(env, request, status, headers, began_at)
+    def log(env, request, status, headers, began_at, body = nil)
       logger = @logger || env[RACK_ERRORS]
 
       # "text/html" -> "html", "application/ld+json; profile..." -> "ld+json"
@@ -55,14 +55,21 @@ module Sinatree
         "output=#{headers["Content-Length"]}",
         "format=#{output_format}",
         "status=#{status}",
-        "duration=#{sprintf("%0.2f", Time.now.to_f - began_at)}",
       ]
 
-      if (300..399).include?(status)
+      case status
+      when 300..399
         msg << "location=#{headers["Location"]}"
+      when 400..403, 405..499
+        if body
+          msg << "error=\"#{body}\""
+        end
       end
 
-      msg << "params=#{App.filter_parameters(request.params).inspect}"
+      msg += [
+        "duration=#{sprintf("%0.2f", Time.now.to_f - began_at)}",
+        "params=#{App.filter_parameters(request.params).inspect}",
+      ]
 
       request.log_extras.each do |k,v|
         msg << "#{k}=#{v}"
