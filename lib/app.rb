@@ -59,8 +59,8 @@ class App < Sinatra::Base
   # defaults, to be overridden with App.X = "..." in config/app.rb
 
   # app name used in various places (emails, etc.)
-  cattr_accessor :name
-  @@name = "App"
+  cattr_accessor :title
+  @@title = "App"
 
   # for controllers to be relative to a global base path
   cattr_accessor :base_path

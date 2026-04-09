@@ -33,7 +33,7 @@ module Rack
       if App.exception_recipients.any?
         Pony.mail(
           :to => App.exception_recipients,
-          :subject => "[#{App.name}] #{exception.class} exception " <<
+          :subject => "[#{App.title}] #{exception.class} exception " <<
             "(#{exception.message[0, 50]})",
           :body => b
         )
