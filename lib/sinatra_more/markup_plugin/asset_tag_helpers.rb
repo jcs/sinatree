@@ -40,16 +40,31 @@ module SinatraMore
     # parameters: name, url='javascript:void(0)', options={}, &block
     def link_to(*args, &block)
       if block_given?
-        url, options = (args[0] || 'javascript:void(0);'), (args[1] || {})
-        options.reverse_merge!(:href => url)
-        link_content = capture_html(&block)
-        result_link = content_tag(:a, link_content, options)
-        block_is_template?(block) ? concat_content(result_link) : result_link
+        name, url, options = capture_html(&block),
+          (args[0] || 'javascript:void(0);'), (args[1] || {})
       else
-        name, url, options = args.first, (args[1] || 'javascript:void(0);'), (args[2] || {})
-        options.reverse_merge!(:href => url)
-        content_tag(:a, name, options)
+        name, url, options = args.first,
+          (args[1] || 'javascript:void(0);'), (args[2] || {})
       end
+      options.reverse_merge!(:href => url)
+
+      if options[:data] && options[:data][:method]
+        confirm = options[:data][:confirm]
+        form_url = options.delete(:href)
+        options.delete(:data)
+        options[:type] = "submit"
+        options[:value] = name
+        onsubmit = confirm ?
+          "return confirm('#{confirm.gsub("'", "\\\\'")}');" : nil
+        csrf = hidden_field_tag(Rack::Csrf.field,
+          :value => Rack::Csrf.csrf_token(env))
+        return content_tag(:form, csrf + tag(:input, options),
+          :action => form_url, :method => "post", :onsubmit => onsubmit,
+          :style => "display: inline;")
+      end
+
+      result_link = content_tag(:a, name, options)
+      block_is_template?(block) ? concat_content(result_link) : result_link
     end
 
     # Creates a mail link element with given name and caption
