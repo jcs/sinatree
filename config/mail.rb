@@ -1,4 +1,4 @@
-Pony.options = {
+Mailer.options = {
   :from => "nobody@example.com",
   :via => :smtp,
   :via_options => {

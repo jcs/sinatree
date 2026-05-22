@@ -29,7 +29,7 @@ require "cgi"
 require "rack/csrf"
 
 # configure mail early in case of exceptions
-require "pony"
+require "#{APP_ROOT}/lib/mailer.rb"
 require "#{APP_ROOT}/config/mail.rb"
 
 # setup our custom logging to STDOUT

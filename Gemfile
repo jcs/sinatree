@@ -24,8 +24,7 @@ gem "json"
 gem "bcrypt"
 
 # for email and notification exceptions
-gem "mail"
-gem "pony"
+gem "net-smtp"
 
 # for development
 gem "rerun"
