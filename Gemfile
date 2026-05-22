@@ -10,8 +10,6 @@ gem "erubi"
 gem "rack_csrf"
 
 gem "activerecord", "~> 8.0"
-gem "sinatra-contrib"
-gem "sinatra-activerecord"
 
 gem "sqlite3"
 # for mysql connections

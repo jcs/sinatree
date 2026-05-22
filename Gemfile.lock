@@ -48,7 +48,6 @@ GEM
     minitest (6.0.3)
       drb (~> 2.0)
       prism (~> 1.5)
-    multi_json (1.19.1)
     mustermann (3.0.4)
       ruby2_keywords (~> 0.0.1)
     net-protocol (0.2.2)
@@ -102,15 +101,6 @@ GEM
       rack-protection (= 4.1.1)
       rack-session (>= 2.0.0, < 3)
       tilt (~> 2.0)
-    sinatra-activerecord (2.0.28)
-      activerecord (>= 4.1)
-      sinatra (>= 1.0)
-    sinatra-contrib (4.1.1)
-      multi_json (>= 0.0.2)
-      mustermann (~> 3.0)
-      rack-protection (= 4.1.1)
-      sinatra (= 4.1.1)
-      tilt (~> 2.0)
     sqlite3 (2.9.2)
       mini_portile2 (~> 2.8.0)
     stringio (3.2.0)
@@ -141,8 +131,6 @@ DEPENDENCIES
   rb-kqueue
   rerun
   sinatra (< 4.2)
-  sinatra-activerecord
-  sinatra-contrib
   sqlite3
 
 RUBY VERSION

@@ -23,8 +23,6 @@ require "active_support/time"
 require "securerandom"
 
 require "sinatra/base"
-require "sinatra/namespace"
-require "sinatra/activerecord"
 require "cgi"
 require "rack/csrf"
 
@@ -53,8 +51,6 @@ module Rack
 end
 
 class App < Sinatra::Base
-  register Sinatra::Namespace
-  register Sinatra::ActiveRecordExtension
 
   # defaults, to be overridden with App.X = "..." in config/app.rb
 
@@ -82,9 +78,6 @@ class App < Sinatra::Base
 
   # where we're at
   set :root, File.realpath(__dir__ + "/../")
-
-  # config for active record
-  set :database_file, "#{App.root}/db/config.yml"
 
   # gathered later from all controllers
   @@all_routes = {}
@@ -141,6 +134,12 @@ class App < Sinatra::Base
   # before every request, store controller for Logger
   before do
     request.current_controller = self.class
+  end
+
+  # return AR connections to the pool after each request so they don't leak
+  # across threads (doesn't actually clear/close them)
+  after do
+    ActiveRecord::Base.connection_handler.clear_active_connections!
   end
 
   class << self
