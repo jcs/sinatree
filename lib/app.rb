@@ -25,6 +25,7 @@ require "securerandom"
 require "sinatra/base"
 require "cgi"
 require "rack/csrf"
+require "uri"
 
 # configure mail early in case of exceptions
 require "#{APP_ROOT}/lib/mailer.rb"
@@ -60,11 +61,11 @@ class App < Sinatra::Base
 
   # for controllers to be relative to a global base path
   cattr_accessor :base_path
-  @@base_path = "/"
+  @@base_path = URI("/")
 
   # to be replaced by an absolute url with scheme/domain
   cattr_accessor :base_url
-  @@base_url = "/"
+  @@base_url = URI("https://example.com/")
 
   # email addresses to be notified of exceptions
   cattr_accessor :exception_recipients
