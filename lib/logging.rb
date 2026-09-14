@@ -47,7 +47,7 @@ module Sinatree
       msg = [
         "[#{Time.now.strftime("%Y-%m-%d %H:%M:%S")}]",
         "[#{headers["X-Request-Id"]}]",
-        "[#{env["HTTP_X_FORWARDED_FOR"] || env["REMOTE_ADDR"] || "?"}]",
+        "[#{request.ip || "?"}]",
         "method=#{env["REQUEST_METHOD"]}",
         "path=#{env["PATH_INFO"]}",
         "controller=#{request.current_controller}",
