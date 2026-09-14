@@ -232,10 +232,10 @@ module SinatraMore
       end
       option_items.collect{|caption, value|
         value ||= caption
-        selected = selected_values.find{|v|
-          v.to_s.match(/^(#{value}|#{caption})$/)
+        selected = selected_values.any?{|v|
+          v.to_s == value.to_s || v.to_s == caption.to_s
         }
-        content_tag(:option, caption, :value => value, :selected => !!selected)
+        content_tag(:option, caption, :value => value, :selected => selected)
       }.join("\n")
     end
 
@@ -258,11 +258,11 @@ module SinatraMore
         content_tag(:optgroup,
           opts.map{|caption,value|
             value ||= caption
-            selected = selected_values.find{|v|
-              v.to_s.match(/^(#{value}|#{caption})$/)
+            selected = selected_values.any?{|v|
+              v.to_s == value.to_s || v.to_s == caption.to_s
             }
             content_tag(:option, caption, :value => value,
-              :selected => !!selected)
+              :selected => selected)
           }.join("\n"),
           :label => group_caption)
       }.join("\n")
