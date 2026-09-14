@@ -111,12 +111,13 @@ class App < Sinatra::Base
   @@logger = ::Logger.new(STDOUT)
   use Sinatree::Logger, @@logger
 
-  # encrypted sessions, requiring a per-app secret to be configured
+  # signed sessions, requiring a per-app secret to be configured
   enable :sessions
   set :sessions, {
     :key => "_session",
     :httponly => true,
     :same_site => :lax,
+    :coder => Rack::Session::Cookie::Base64::JSON.new,
   }
   begin
     set :session_secret, File.read("#{App.root}/config/session_secret")
