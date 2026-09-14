@@ -55,7 +55,7 @@ module SinatraMore
         options[:type] = "submit"
         options[:value] = name
         onsubmit = confirm ?
-          "return confirm('#{confirm.gsub("'", "\\\\'")}');" : nil
+          Rack::Utils.escape_html("return confirm(#{confirm.to_json});") : nil
         csrf = hidden_field_tag(Rack::Csrf.field,
           :value => Rack::Csrf.csrf_token(env))
         return content_tag(:form, csrf + tag(:input, options),
