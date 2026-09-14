@@ -116,6 +116,7 @@ class App < Sinatra::Base
   set :sessions, {
     :key => "_session",
     :httponly => true,
+    :secure => production?,
     :same_site => :lax,
     :coder => Rack::Session::Cookie::Base64::JSON.new,
   }
