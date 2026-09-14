@@ -189,7 +189,7 @@ class App < Sinatra::Base
   end
 
   def flash
-    session[:flash] ||= {}
+    session[:flash] = (session[:flash] || {}).with_indifferent_access
   end
 
   def logger
