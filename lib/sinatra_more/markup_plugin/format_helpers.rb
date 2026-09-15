@@ -83,8 +83,8 @@ module SinatraMore
     # escape_javascript("<h1>Hey</h1>")
     def escape_javascript(html_content)
       return '' unless html_content
-      javascript_mapping = { '\\' => '\\\\', '</' => '<\/', "\r\n" => '\n', "\n" => '\n' }
-      javascript_mapping.merge("\r" => '\n', '"' => '\\"', "'" => "\\'")
+      javascript_mapping = { '\\' => '\\\\', '</' => '<\/', "\r\n" => '\n',
+        "\n" => '\n', "\r" => '\n', '"' => '\\"', "'" => "\\'" }
       escaped_string = html_content.gsub(/(\\|<\/|\r\n|[\n\r"'])/) { javascript_mapping[$1] }
       "\"#{escaped_string}\""
     end
