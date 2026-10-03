@@ -154,7 +154,7 @@ class App < Sinatra::Base
     rescue => e
       e.backtrace.each do |z|
         if m = z.match(/app\/controllers\/(.+?)_controller\.rb:/)
-          return m[1]
+          return m[1].gsub("/", "_")
         end
       end
 
@@ -237,7 +237,7 @@ end
 # and controllers, binding each's helper
 (
   [ "#{App.root}/app/controllers/application_controller.rb" ] +
-  Dir.glob("#{App.root}/app/controllers/*.rb")
+  Dir.glob("#{App.root}/app/controllers/**/*.rb")
 ).uniq.each do |f|
   mc = Module.constants
   require f
