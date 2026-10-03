@@ -18,7 +18,7 @@ describe UniqueId do
     assert uobj
 
     assert_operator uobj.time.to_i, :>=, t.to_i
-    assert_operator uobj.time.to_i, :<, t2.to_i
+    assert_operator uobj.time.to_i, :<=, t2.to_i
 
     assert_equal uobj.node, 5
 
