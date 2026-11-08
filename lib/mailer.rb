@@ -46,7 +46,7 @@ module Mailer
       port = vo[:port] || 25
       smtp = Net::SMTP.new(host, port)
       if vo[:openssl_verify_mode]
-        smtp.enable_tls(OpenSSL::SSL::SSLContext.new.tap do |ctx|
+        smtp.enable_starttls_auto(OpenSSL::SSL::SSLContext.new.tap do |ctx|
           ctx.verify_mode = vo[:openssl_verify_mode]
         end)
       end
