@@ -4,7 +4,7 @@ ruby ">= 3.4"
 
 gem "rack"
 
-gem "sinatra", "< 4.2"
+gem "sinatra", "< 4.3"
 gem "erubi"
 
 gem "rack_csrf"

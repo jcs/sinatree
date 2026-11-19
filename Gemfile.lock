@@ -64,7 +64,7 @@ GEM
     puma (7.2.1)
       nio4r (~> 2.0)
     rack (3.2.8)
-    rack-protection (4.1.1)
+    rack-protection (4.2.2)
       base64 (>= 0.1.0)
       logger (>= 1.6.0)
       rack (>= 3.0.0, < 4)
@@ -92,11 +92,11 @@ GEM
     rerun (0.14.0)
       listen (~> 3.0)
     securerandom (0.4.1)
-    sinatra (4.1.1)
+    sinatra (4.2.2)
       logger (>= 1.6.0)
       mustermann (~> 3.0)
       rack (>= 3.0.0, < 4)
-      rack-protection (= 4.1.1)
+      rack-protection (= 4.2.2)
       rack-session (>= 2.0.0, < 3)
       tilt (~> 2.0)
     sqlite3 (2.10.2)
@@ -128,7 +128,7 @@ DEPENDENCIES
   rake
   rb-kqueue
   rerun
-  sinatra (< 4.2)
+  sinatra (< 4.3)
   sqlite3
 
 RUBY VERSION
