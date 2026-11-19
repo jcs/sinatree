@@ -17,12 +17,6 @@
 # rake db:create_migration NAME=...
 require "active_record"
 
-namespace :db do
-  task :load_config do
-    require "./lib/app.rb"
-  end
-end
-
 load "active_record/railties/databases.rake"
 
 ActiveRecord::Tasks::DatabaseTasks.tap do |config|
@@ -30,10 +24,16 @@ ActiveRecord::Tasks::DatabaseTasks.tap do |config|
   config.env = ENV["APP_ENV"] || ENV["RACK_ENV"] || "development"
   config.db_dir = "db"
   config.migrations_paths = ["db/migrate"]
-  config.database_configuration = ActiveRecord::Base.configurations
 end
 
 Rake::Task["db:load_config"].clear
+namespace :db do
+  task :load_config do
+    require "./lib/app.rb"
+    ActiveRecord::Base.configurations =
+      YAML.load_file("#{App.root}/db/config.yml")
+  end
+end
 Rake::Task.define_task("db:environment")
 if Rake::Task.task_defined?("db:test:deprecated")
   Rake::Task["db:test:deprecated"].clear
