@@ -28,7 +28,7 @@ module Sinatree
       began_at = Time.now.to_f
       request = Sinatra::Request.new(env)
       status, headers, body = @app.call(env)
-      headers["X-Request-Id"] = request.uuid
+      headers["x-request-id"] = request.uuid
       body = Rack::BodyProxy.new(body) {
         log(env, request, status, headers, began_at, body.try(:first))
       }
@@ -41,25 +41,25 @@ module Sinatree
       logger = @logger || env[RACK_ERRORS]
 
       # "text/html" -> "html", "application/ld+json; profile..." -> "ld+json"
-      output_format = headers["Content-Type"].to_s.split("/")[1].to_s.
+      output_format = headers["content-type"].to_s.split("/")[1].to_s.
         split(";")[0]
 
       msg = [
         "[#{Time.now.strftime("%Y-%m-%d %H:%M:%S")}]",
-        "[#{headers["X-Request-Id"]}]",
+        "[#{headers["x-request-id"]}]",
         "[#{request.ip || "?"}]",
         "method=#{env["REQUEST_METHOD"]}",
         "path=#{env["PATH_INFO"]}",
         "controller=#{request.current_controller}",
         "input=#{request.content_length.to_i}",
-        "output=#{headers["Content-Length"]}",
+        "output=#{headers["content-length"]}",
         "format=#{output_format}",
         "status=#{status}",
       ]
 
       case status
       when 300..399
-        msg << "location=#{headers["Location"]}"
+        msg << "location=#{headers["location"]}"
       when 400..403, 405..499
         if body
           msg << "error=\"#{body}\""
