@@ -14,7 +14,7 @@ module Rack
 
       return [
         500,
-        { "Content-Type" => "text/html" },
+        { "content-type" => "text/html" },
         [ "<html><body><h1>Internal Server Error</h1><p>:(</p></body></html>" ],
       ]
     end
