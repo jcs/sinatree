@@ -162,15 +162,20 @@ class App < Sinatra::Base
     end
 
     def filter_parameters(params)
-      params.reduce({}) do |acc, (key,value)|
-        if value.is_a?(Hash)
-          acc[key] = filter_parameters(value)
-        elsif App.filtered_parameters.detect{|fp| key.match(fp) }
-          acc[key] = "[filtered]"
-        else
-          acc[key] = value
+      case params
+      when Hash
+        params.reduce({}) do |acc, (key,value)|
+          if App.filtered_parameters.detect{|fp| key.match(fp) }
+            acc[key] = "[filtered]"
+          else
+            acc[key] = filter_parameters(value)
+          end
+          acc
         end
-        acc
+      when Array
+        params.map{|v| filter_parameters(v) }
+      else
+        params
       end
     end
 
